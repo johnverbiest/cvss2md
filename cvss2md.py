@@ -106,11 +106,13 @@ labels = {
 }
 
 
-if len(sys.argv) != 2:
-    print("usage: cvss2markdown.py <cvss vector>")
+if len(sys.argv) != 4:
+    print("usage: cvss2md.py <cvss vector> <cvss score> <cvss rating (none-low-medium-high-critical)>")
     sys.exit(1)
 
 vec = sys.argv[1]
+score= sys.argv[2]
+rating = sys.argv[3]
 
 components = vec.split("/")
 
@@ -119,10 +121,13 @@ if components[0].startswith("CVSS"):
     # if included
     components = components[1:]
 
-mid, bot = "| ", "| "
-iheader = "| "
-paras = ""
 
+output = "## Vulnerability Score\r\n\r\n"
+output = "This vulnerability has a " + rating + " rating (score " + score + \
+         "/10). This score was built on the following metrics:\r\n\r\n"
+
+output += "| Metric | Result | Description |\r\n"
+output += "|:-------|:-------|:------------|\r\n"
 for component in components:
     area, value = component.split(":")
 
@@ -135,16 +140,11 @@ for component in components:
         sys.exit(3)
 
     label = "{0}_{1}_Label".format(area, value)
+    full_description = labels[label]
+    name = area_names[area]
+    severity = defaults[area][value]
+    output += "| " + name + " | " + severity + " | " + full_description + " | \r\n"
 
-    lval = labels[label]
+output +="\r\n The CVSS vector string is ["+vec+"](https://www.first.org/cvss/calculator/3.1#"+vec+")."
 
-    paras += "{0}\n\n".format(lval)
-
-    iheader += "{0} | ".format(area)
-    mid += ":---: | "
-    bot += "{0} | ".format(defaults[area][value])
-
-print(iheader)
-print(mid)
-print(bot)
-print("\n", paras)
+print(output)
