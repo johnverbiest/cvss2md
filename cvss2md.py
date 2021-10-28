@@ -1,3 +1,4 @@
+#!/bin/python
 import sys
 
 defaults = {
@@ -106,7 +107,7 @@ labels = {
 
 
 if len(sys.argv) != 2:
-    print "usage: cvss2markdown.py <cvss vector>"
+    print("usage: cvss2markdown.py <cvss vector>")
     sys.exit(1)
 
 vec = sys.argv[1]
@@ -126,11 +127,11 @@ for component in components:
     area, value = component.split(":")
 
     if area not in defaults:
-        print "This tool _only_ handles base score calculation."
+        print("This tool _only_ handles base score calculation.")
         sys.exit(2)
 
     if value not in defaults[area]:
-        print "Invalid value provided as CVSS attribute value."
+        print("Invalid value provided as CVSS attribute value.")
         sys.exit(3)
 
     label = "{0}_{1}_Label".format(area, value)
@@ -143,7 +144,7 @@ for component in components:
     mid += ":---: | "
     bot += "{0} | ".format(defaults[area][value])
 
-print iheader
-print mid
-print bot
-print "\n", paras
+print(iheader)
+print(mid)
+print(bot)
+print("\n", paras)
