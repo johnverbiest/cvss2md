@@ -122,7 +122,7 @@ if components[0].startswith("CVSS"):
     components = components[1:]
 
 
-output = "## Vulnerability Score\r\n\r\n"
+output = "### Vulnerability Score\r\n\r\n"
 output = "This vulnerability has a " + rating + " rating (score " + score + \
          "/10). This score was built on the following metrics:\r\n\r\n"
 
